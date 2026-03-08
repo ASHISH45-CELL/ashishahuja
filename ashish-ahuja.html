@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ashish Ahuja — Venture Scout</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@200;300;400;600;700&family=Neue+Haas+Grotesk+Display+Pro:wght@400;500&display=swap" rel="stylesheet">
+<!-- Fallback to similar fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --white: #ffffff;
+  --off-white: #f5f5f7;
+  --light-gray: #e8e8ed;
+  --mid-gray: #86868b;
+  --dark-gray: #1d1d1f;
+  --black: #000000;
+  --blue: #0071e3;
+  --blue-hover: #0077ed;
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  background: var(--white);
+  color: var(--dark-gray);
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CURSOR ─────────────────── */
+.cur-dot {
+  width: 6px; height: 6px;
+  background: var(--dark-gray);
+  border-radius: 50%;
+  position: fixed; top:0; left:0;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: width .2s, height .2s, background .2s;
+}
+.cur-ring {
+  width: 28px; height: 28px;
+  border: 1.5px solid rgba(0,0,0,0.3);
+  border-radius: 50%;
+  position: fixed; top:0; left:0;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: transform .5s cubic-bezier(.23,1,.32,1), width .3s, height .3s, opacity .3s;
+}
+.cur-ring.expand {
+  width: 48px; height: 48px;
+  border-color: rgba(0,113,227,0.4);
+  background: rgba(0,113,227,0.04);
+}
+.cur-dot.on-blue { background: var(--white); }
+
+/* ── NAV ────────────────────── */
+nav {
+  position: fixed; top:0; left:0; right:0;
+  z-index: 500;
+  height: 52px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 44px;
+  background: rgba(255,255,255,0.82);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.nav-logo {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--dark-gray);
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex; gap: 32px; list-style: none;
+  position: absolute; left: 50%; transform: translateX(-50%);
+}
+
+.nav-links a {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--dark-gray);
+  text-decoration: none;
+  letter-spacing: -0.1px;
+  transition: color .15s;
+}
+.nav-links a:hover { color: var(--mid-gray); }
+
+.nav-cta {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--blue);
+  text-decoration: none;
+  letter-spacing: -0.1px;
+  transition: color .15s;
+}
+.nav-cta:hover { color: var(--blue-hover); }
+
+/* ── HERO ───────────────────── */
+#hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 120px 24px 80px;
+  background: var(--white);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle radial glow */
+#hero::before {
+  content: '';
+  position: absolute;
+  width: 900px; height: 900px;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-55%);
+  background: radial-gradient(ellipse, rgba(0,113,227,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--off-white);
+  border-radius: 980px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--mid-gray);
+  letter-spacing: 0.01em;
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: fadeUp .7s ease .1s forwards;
+}
+
+.hero-badge-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #34c759;
+  box-shadow: 0 0 0 2px rgba(52,199,89,0.25);
+  animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(52,199,89,0.25); }
+  50% { box-shadow: 0 0 0 5px rgba(52,199,89,0.1); }
+}
+
+.hero-headline {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: clamp(52px, 7.5vw, 96px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.0;
+  color: var(--dark-gray);
+  max-width: 900px;
+  opacity: 0;
+  animation: fadeUp .8s ease .25s forwards;
+}
+
+.hero-headline .accent {
+  background: linear-gradient(135deg, #0071e3 0%, #34aadc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  margin-top: 24px;
+  font-size: clamp(17px, 2vw, 21px);
+  font-weight: 300;
+  color: var(--mid-gray);
+  max-width: 560px;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+  opacity: 0;
+  animation: fadeUp .8s ease .4s forwards;
+}
+
+.hero-actions {
+  margin-top: 40px;
+  display: flex; gap: 16px; align-items: center;
+  opacity: 0;
+  animation: fadeUp .8s ease .55s forwards;
+}
+
+.btn-fill {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--blue);
+  color: var(--white);
+  padding: 13px 24px;
+  border-radius: 980px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  letter-spacing: -0.2px;
+  transition: background .2s, transform .2s;
+}
+.btn-fill:hover { background: var(--blue-hover); transform: scale(1.02); }
+
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--blue);
+  padding: 13px 24px;
+  border-radius: 980px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  letter-spacing: -0.2px;
+  transition: background .2s;
+}
+.btn-outline:hover { background: rgba(0,113,227,0.06); }
+.btn-outline .arrow { transition: transform .2s; }
+.btn-outline:hover .arrow { transform: translateX(3px); }
+
+/* Hero scroll indicator */
+.hero-scroll {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  opacity: 0;
+  animation: fadeIn 1s ease 1.2s forwards;
+}
+
+.scroll-track {
+  width: 1.5px;
+  height: 48px;
+  background: var(--light-gray);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.scroll-fill {
+  position: absolute;
+  top: -100%; left: 0;
+  width: 100%; height: 100%;
+  background: var(--mid-gray);
+  animation: scrollDown 1.8s ease 1.4s infinite;
+}
+
+@keyframes scrollDown {
+  0% { top: -100%; }
+  100% { top: 100%; }
+}
+
+/* ── STATS STRIP ─────────────── */
+.stats-strip {
+  background: var(--off-white);
+  padding: 60px 44px;
+  display: flex; justify-content: center; gap: 0;
+}
+
+.stat-block {
+  flex: 1;
+  max-width: 220px;
+  text-align: center;
+  padding: 0 32px;
+  border-right: 1px solid var(--light-gray);
+}
+.stat-block:last-child { border-right: none; }
+
+.stat-n {
+  font-family: 'Inter', sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--dark-gray);
+  line-height: 1;
+}
+
+.stat-n sup {
+  font-size: 22px;
+  font-weight: 600;
+  vertical-align: super;
+  color: var(--blue);
+}
+
+.stat-label {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--mid-gray);
+  font-weight: 400;
+  letter-spacing: -0.1px;
+  line-height: 1.4;
+}
+
+/* ── SECTIONS COMMON ─────────── */
+.section {
+  padding: 120px 44px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.section-wide {
+  padding: 120px 0;
+  max-width: 100%;
+}
+
+.eyebrow {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 16px;
+}
+
+.section-h {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(36px, 4.5vw, 56px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--dark-gray);
+  margin-bottom: 20px;
+}
+
+.section-body {
+  font-size: 19px;
+  font-weight: 300;
+  color: var(--mid-gray);
+  line-height: 1.6;
+  max-width: 560px;
+  letter-spacing: -0.01em;
+}
+
+/* ── ABOUT ────────────────────── */
+#about { background: var(--white); }
+
+.about-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 120px 44px;
+}
+
+.about-left .eyebrow { margin-bottom: 20px; }
+
+.about-quote {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(28px, 3.5vw, 42px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: var(--dark-gray);
+  margin-bottom: 28px;
+}
+
+.about-quote em {
+  font-style: normal;
+  background: linear-gradient(135deg, #0071e3 0%, #34aadc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.about-body p {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--mid-gray);
+  line-height: 1.7;
+  letter-spacing: -0.01em;
+  margin-bottom: 16px;
+}
+
+.about-body p strong {
+  color: var(--dark-gray);
+  font-weight: 600;
+}
+
+.about-right {
+  display: flex; flex-direction: column; gap: 2px;
+}
+
+.belief-card {
+  background: var(--off-white);
+  border-radius: 18px;
+  padding: 28px 32px;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.belief-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+.belief-icon {
+  font-size: 24px;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.belief-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--dark-gray);
+  letter-spacing: -0.2px;
+  margin-bottom: 6px;
+}
+
+.belief-text {
+  font-size: 14px;
+  color: var(--mid-gray);
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+/* ── WORK ────────────────────── */
+#work { background: var(--off-white); padding: 120px 0; }
+
+.work-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 44px;
+}
+
+.work-header { margin-bottom: 64px; }
+
+.timeline { display: flex; flex-direction: column; gap: 2px; }
+
+.tl-item {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 40px 44px;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 48px;
+  transition: transform .25s ease, box-shadow .25s ease;
+  cursor: default;
+}
+
+.tl-item:hover {
+  transform: scale(1.005);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.07);
+}
+
+.tl-meta {}
+
+.tl-company {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 6px;
+}
+
+.tl-role {
+  font-family: 'Inter', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--dark-gray);
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.tl-date {
+  font-size: 13px;
+  color: var(--mid-gray);
+  font-weight: 400;
+}
+
+.tl-tag {
+  display: inline-block;
+  margin-top: 14px;
+  background: var(--off-white);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--mid-gray);
+}
+
+.tl-tag.current {
+  background: rgba(52,199,89,0.1);
+  color: #1a7f37;
+}
+
+.tl-bullets {
+  list-style: none;
+  display: flex; flex-direction: column; gap: 12px;
+  padding-top: 4px;
+}
+
+.tl-bullets li {
+  font-size: 15px;
+  color: #4a4a4f;
+  line-height: 1.6;
+  font-weight: 400;
+  padding-left: 18px;
+  position: relative;
+  letter-spacing: -0.1px;
+}
+
+.tl-bullets li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 9px;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--light-gray);
+}
+
+/* ── SKILLS ──────────────────── */
+#skills { background: var(--white); }
+
+.skills-layout {
+  max-width: 1100px; margin: 0 auto; padding: 120px 44px;
+}
+
+.skills-header { margin-bottom: 64px; max-width: 560px; }
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.sk-card {
+  background: var(--off-white);
+  border-radius: 2px;
+  padding: 36px 32px;
+  transition: background .25s, transform .25s;
+  position: relative;
+  overflow: hidden;
+}
+
+.sk-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0,113,227,0.06) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity .3s;
+}
+
+.sk-card:hover { background: #f0f4ff; transform: translateY(-2px); }
+.sk-card:hover::after { opacity: 1; }
+
+.sk-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--blue);
+  margin-bottom: 20px;
+  position: relative; z-index: 1;
+}
+
+.sk-name {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--dark-gray);
+  letter-spacing: -0.2px;
+  margin-bottom: 10px;
+  position: relative; z-index: 1;
+}
+
+.sk-desc {
+  font-size: 14px;
+  color: var(--mid-gray);
+  line-height: 1.6;
+  font-weight: 400;
+  position: relative; z-index: 1;
+}
+
+/* ── LOOKING FOR ─────────────── */
+#looking {
+  background: var(--dark-gray);
+  padding: 100px 44px;
+  text-align: center;
+}
+
+.looking-inner {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.looking-eyebrow {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 20px;
+}
+
+.looking-h {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(36px, 5vw, 60px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--white);
+  margin-bottom: 20px;
+}
+
+.looking-h em {
+  font-style: italic;
+  font-weight: 300;
+  color: rgba(255,255,255,0.5);
+}
+
+.looking-body {
+  font-size: 18px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  margin-bottom: 40px;
+}
+
+.looking-tags {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+  margin-bottom: 48px;
+}
+
+.ltag {
+  background: rgba(255,255,255,0.08);
+  border-radius: 980px;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.7);
+  letter-spacing: -0.1px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* ── EDUCATION ───────────────── */
+#education { background: var(--off-white); }
+
+.edu-layout {
+  max-width: 1100px; margin: 0 auto; padding: 120px 44px;
+}
+
+.edu-header { margin-bottom: 64px; }
+
+.edu-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+}
+
+.edu-card {
+  background: var(--white);
+  border-radius: 2px;
+  padding: 36px 40px;
+  transition: transform .25s, box-shadow .25s;
+}
+.edu-card:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(0,0,0,0.06); }
+
+.edu-org {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 10px;
+}
+
+.edu-degree {
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--dark-gray);
+  letter-spacing: -0.2px;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.edu-detail {
+  font-size: 14px;
+  color: var(--mid-gray);
+  font-weight: 400;
+}
+
+/* ── CONTACT ─────────────────── */
+#contact {
+  background: var(--white);
+  padding: 140px 44px;
+  text-align: center;
+}
+
+.contact-inner { max-width: 640px; margin: 0 auto; }
+
+.contact-h {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(44px, 6vw, 72px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.0;
+  color: var(--dark-gray);
+  margin-bottom: 20px;
+}
+
+.contact-sub {
+  font-size: 19px;
+  font-weight: 300;
+  color: var(--mid-gray);
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  margin-bottom: 48px;
+}
+
+.contact-links {
+  display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
+  margin-bottom: 48px;
+}
+
+.contact-chip {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--off-white);
+  border-radius: 980px;
+  padding: 12px 22px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--dark-gray);
+  text-decoration: none;
+  letter-spacing: -0.1px;
+  transition: background .2s, transform .2s;
+}
+.contact-chip:hover { background: var(--light-gray); transform: translateY(-2px); }
+.contact-chip .chip-icon { font-size: 16px; }
+
+/* ── FOOTER ──────────────────── */
+footer {
+  background: var(--off-white);
+  padding: 24px 44px;
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 1px solid var(--light-gray);
+}
+
+footer p {
+  font-size: 12px;
+  color: var(--mid-gray);
+  letter-spacing: -0.1px;
+}
+
+/* ── ANIMATIONS ──────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity .75s cubic-bezier(.25,.46,.45,.94), transform .75s cubic-bezier(.25,.46,.45,.94);
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: .1s; }
+.reveal-delay-2 { transition-delay: .2s; }
+.reveal-delay-3 { transition-delay: .3s; }
+
+/* ── DIVIDER ─────────────────── */
+.divider {
+  width: 100%; height: 1px;
+  background: var(--light-gray);
+  border: none;
+}
+
+/* ── RESPONSIVE ──────────────── */
+@media (max-width: 860px) {
+  nav { padding: 0 24px; }
+  .nav-links { display: none; }
+  .about-layout { grid-template-columns: 1fr; padding: 80px 24px; gap: 48px; }
+  .tl-item { grid-template-columns: 1fr; gap: 24px; padding: 32px 28px; }
+  .skills-grid { grid-template-columns: 1fr 1fr; }
+  .edu-grid { grid-template-columns: 1fr; }
+  .section { padding: 80px 24px; }
+  .stats-strip { padding: 48px 24px; gap: 0; flex-wrap: wrap; }
+  .stat-block { min-width: 50%; border-right: none; padding: 24px 0; border-bottom: 1px solid var(--light-gray); }
+  footer { flex-direction: column; gap: 8px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="cur-dot" id="curDot"></div>
+<div class="cur-ring" id="curRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Ashish Ahuja</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#looking">Open to</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="mailto:ashishahuja045@gmail.com" class="nav-cta">Get in touch ↗</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-badge">
+    <span class="hero-badge-dot"></span>
+    Venture Scout · LevlUp Ventures
+  </div>
+
+  <h1 class="hero-headline">
+    I find the companies<br>the world hasn't <span class="accent">noticed yet.</span>
+  </h1>
+
+  <p class="hero-sub">
+    Venture scout, operator-at-heart, people-first. I sit at the intersection of conviction and curiosity — and I've been building there since day one.
+  </p>
+
+  <div class="hero-actions">
+    <a href="#work" class="btn-fill">See my work</a>
+    <a href="#looking" class="btn-outline">I'm open to roles <span class="arrow">→</span></a>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-track"><div class="scroll-fill"></div></div>
+  </div>
+</section>
+
+<!-- STATS STRIP -->
+<div class="stats-strip">
+  <div class="stat-block reveal">
+    <div class="stat-n">50<sup>+</sup></div>
+    <div class="stat-label">Founders screened<br>& evaluated</div>
+  </div>
+  <div class="stat-block reveal reveal-delay-1">
+    <div class="stat-n">3</div>
+    <div class="stat-label">Years deep in the<br>startup ecosystem</div>
+  </div>
+  <div class="stat-block reveal reveal-delay-2">
+    <div class="stat-n">25<sup>%</sup></div>
+    <div class="stat-label">Conversion lift<br>driven at Friendzo</div>
+  </div>
+  <div class="stat-block reveal reveal-delay-3">
+    <div class="stat-n">1</div>
+    <div class="stat-label">Seed round closed<br>as an operator</div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ABOUT -->
+<section id="about" style="padding:0;">
+  <div class="about-layout">
+    <div class="about-left reveal">
+      <p class="eyebrow">About me</p>
+      <h2 class="about-quote">
+        I don't just analyse deals.<br>I <em>care</em> about the people behind them.
+      </h2>
+      <div class="about-body">
+        <p>I'm a venture scout at LevlUp Ventures, sourcing early-stage deals across consumer, fintech, and AI. But the title is the least interesting part — what drives me is the founder conversations, the whiteboard sessions, and the moment a thesis clicks.</p>
+        <p>My VC instincts were forged on the operator side. Two years at <strong>Friendzo's founder's office</strong> taught me how hard it is to build, and why the right capital partner changes everything. I wrote the decks, tracked the metrics, and helped close the seed round. Then I came back to the other side of the table.</p>
+        <p>Before all of that, I was at <strong>AIC Inspire</strong>, reviewing founders, drafting theses, and learning how investors spot potential before it becomes pattern-matched. That experience shaped how I see the world — <strong>always searching for signal in the noise.</strong></p>
+      </div>
+    </div>
+
+    <div class="about-right reveal reveal-delay-1">
+      <div class="belief-card">
+        <span class="belief-icon">🧭</span>
+        <div class="belief-title">Founder-first mindset</div>
+        <div class="belief-text">Great investments start with great founders. I care about people before I care about TAMs.</div>
+      </div>
+      <div style="height:2px;"></div>
+      <div class="belief-card">
+        <span class="belief-icon">🔍</span>
+        <div class="belief-title">Obsessed with early signals</div>
+        <div class="belief-text">The best deals aren't discovered — they're earned through relentless curiosity and staying close to builders.</div>
+      </div>
+      <div style="height:2px;"></div>
+      <div class="belief-card">
+        <span class="belief-icon">🤝</span>
+        <div class="belief-title">Networks compound</div>
+        <div class="belief-text">Every conversation is an investment. I've always believed the most valuable asset you can build is trust at scale.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- WORK -->
+<section id="work">
+  <div class="work-inner">
+    <div class="work-header reveal">
+      <p class="eyebrow">Experience</p>
+      <h2 class="section-h">Where I've built conviction.</h2>
+    </div>
+    <div class="timeline">
+
+      <div class="tl-item reveal">
+        <div class="tl-meta">
+          <div class="tl-company">LevlUp Ventures</div>
+          <div class="tl-role">Venture Scout</div>
+          <div class="tl-date">May 2025 – Present</div>
+          <span class="tl-tag current">● Current</span>
+        </div>
+        <ul class="tl-bullets">
+          <li>Sourced and screened early-stage startups across consumer and fintech using inbound pitches, founder networks, and cold outreach.</li>
+          <li>Built competitive landscape maps and sector benchmarking models to identify emerging opportunities for partner discussions.</li>
+          <li>Developed investment theses by synthesising macro trends, consumer behaviour shifts, and sector-specific growth drivers.</li>
+          <li>Led founder and customer diligence calls, triangulating traction metrics, financials, and founder-market fit signals.</li>
+        </ul>
+      </div>
+
+      <div class="tl-item reveal reveal-delay-1">
+        <div class="tl-meta">
+          <div class="tl-company">Friendzo.in</div>
+          <div class="tl-role">Founder's Office</div>
+          <div class="tl-date">Sep 2023 – Jan 2025</div>
+          <span class="tl-tag">Operator</span>
+        </div>
+        <ul class="tl-bullets">
+          <li>Built out Friendzo's growth and expansion strategy using deep market analysis across Tracxn, Pitchbook, Crunchbase, and Statista.</li>
+          <li>Refined customer acquisition funnels with the marketing team — drove a 25% improvement in lead-to-conversion rate.</li>
+          <li>Crafted investor decks with financial projections, market insights, and operational readiness — directly contributed to closing seed funding through AIC-Inspire.</li>
+          <li>Tracked and reported on KPIs including CAC, LTV, and unit economics to identify cost levers and optimise revenue.</li>
+        </ul>
+      </div>
+
+      <div class="tl-item reveal reveal-delay-2">
+        <div class="tl-meta">
+          <div class="tl-company">AIC Inspire Prestige</div>
+          <div class="tl-role">VC Fellow</div>
+          <div class="tl-date">Apr 2022 – Jun 2022</div>
+          <span class="tl-tag">Fellowship</span>
+        </div>
+        <ul class="tl-bullets">
+          <li>Conducted startup scouting across multiple sectors, reviewing 50+ founders for accelerator selection.</li>
+          <li>Performed market sizing, competitor benchmarking, and traction analysis to support investment proposals.</li>
+          <li>Drafted sector investment theses across fintech, consumer, and SaaS aligned to fund strategy.</li>
+          <li>Represented AIC Inspire at ecosystem summits and mixers — built relationships with founders, investors, and partners.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SKILLS -->
+<section id="skills" style="padding:0; background: var(--white);">
+  <div class="skills-layout">
+    <div class="skills-header reveal">
+      <p class="eyebrow">What I bring</p>
+      <h2 class="section-h">The toolkit.</h2>
+      <p class="section-body">Six years of muscle memory across research, strategy, and deal-making — packaged into the things I actually do well.</p>
+    </div>
+    <div class="skills-grid">
+      <div class="sk-card reveal">
+        <div class="sk-num">01</div>
+        <div class="sk-name">Deal Sourcing</div>
+        <div class="sk-desc">Active pipeline from founder networks, inbound funnels, and ecosystem events. I find deals before they're broadly marketed.</div>
+      </div>
+      <div class="sk-card reveal reveal-delay-1">
+        <div class="sk-num">02</div>
+        <div class="sk-name">Investment Thesis</div>
+        <div class="sk-desc">Bottom-up and top-down construction — synthesising macro trends with micro traction signals into conviction.</div>
+      </div>
+      <div class="sk-card reveal reveal-delay-2">
+        <div class="sk-num">03</div>
+        <div class="sk-name">Market Research</div>
+        <div class="sk-desc">Deep sector mapping using Tracxn, Pitchbook, Crunchbase, and Statista. I build the landscape before the thesis.</div>
+      </div>
+      <div class="sk-card reveal">
+        <div class="sk-num">04</div>
+        <div class="sk-name">Founder Diligence</div>
+        <div class="sk-desc">Structured diligence framework across team, traction, market, and product — with a bias toward founder-market fit.</div>
+      </div>
+      <div class="sk-card reveal reveal-delay-1">
+        <div class="sk-num">05</div>
+        <div class="sk-name">Financial Analysis</div>
+        <div class="sk-desc">Unit economics, KPI tracking (CAC, LTV), financial modelling, and investor-grade deck construction from scratch.</div>
+      </div>
+      <div class="sk-card reveal reveal-delay-2">
+        <div class="sk-num">06</div>
+        <div class="sk-name">GTM & Ops</div>
+        <div class="sk-desc">Designed go-to-market strategies for early-stage products. Operator instincts that sharpen how I evaluate founders.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOOKING FOR -->
+<section id="looking">
+  <div class="looking-inner reveal">
+    <p class="looking-eyebrow">Open to opportunities</p>
+    <h2 class="looking-h">
+      I'm actively looking for<br><em>my next role in VC.</em>
+    </h2>
+    <p class="looking-body">
+      Scouting is where I sharpened my edge — but I'm ready to go deeper. I want to be in the room where the real decisions get made, building conviction at the portfolio level, and adding value to founders from day one.
+    </p>
+    <div class="looking-tags">
+      <span class="ltag">Pre-Seed / Seed Funds</span>
+      <span class="ltag">Early-Stage AI</span>
+      <span class="ltag">Consumer &amp; Fintech</span>
+      <span class="ltag">Analyst / Associate</span>
+      <span class="ltag">Venture Scout</span>
+      <span class="ltag">Founder-in-Residence</span>
+    </div>
+    <a href="mailto:ashishahuja045@gmail.com" class="btn-fill" style="font-size:16px; padding: 15px 32px;">
+      Let's have a conversation →
+    </a>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education" style="padding:0; background: var(--off-white);">
+  <div class="edu-layout">
+    <div class="edu-header reveal">
+      <p class="eyebrow">Education &amp; Credentials</p>
+      <h2 class="section-h">The foundation.</h2>
+    </div>
+    <div class="edu-grid">
+      <div class="edu-card reveal">
+        <div class="edu-org">Prestige Institute of Management</div>
+        <div class="edu-degree">BBA — International Business</div>
+        <div class="edu-detail">2020 – 2023 &nbsp;·&nbsp; 8.8 / 10 CGPA</div>
+      </div>
+      <div class="edu-card reveal reveal-delay-1">
+        <div class="edu-org">Emerald Heights International School</div>
+        <div class="edu-degree">CBSE — Class XII</div>
+        <div class="edu-detail">2019 – 2020 &nbsp;·&nbsp; 85.7%</div>
+      </div>
+      <div class="edu-card reveal reveal-delay-1">
+        <div class="edu-org">Aspire Harvard</div>
+        <div class="edu-degree">Leadership Certificate</div>
+        <div class="edu-detail">Executive education program</div>
+      </div>
+      <div class="edu-card reveal reveal-delay-2">
+        <div class="edu-org">Y-Combinator</div>
+        <div class="edu-degree">Startup School</div>
+        <div class="edu-detail">Founder education &amp; VC perspective</div>
+      </div>
+      <div class="edu-card reveal">
+        <div class="edu-org">SkillsOn</div>
+        <div class="edu-degree">Diving into VC</div>
+        <div class="edu-detail">Venture capital fundamentals</div>
+      </div>
+      <div class="edu-card reveal reveal-delay-1">
+        <div class="edu-org">MP Startup Summit 2022</div>
+        <div class="edu-degree">Operations Head</div>
+        <div class="edu-detail">Ecosystem builder · State-level leadership</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="reveal">
+      <h2 class="contact-h">Let's talk.</h2>
+      <p class="contact-sub">Whether you're a founder, a fund, or just someone who cares deeply about what gets built next — I want to hear from you.</p>
+    </div>
+    <div class="contact-links reveal reveal-delay-1">
+      <a href="mailto:ashishahuja045@gmail.com" class="contact-chip">
+        <span class="chip-icon">✉️</span> ashishahuja045@gmail.com
+      </a>
+      <a href="https://www.linkedin.com/in/ashishahuja045" target="_blank" class="contact-chip">
+        <span class="chip-icon">💼</span> LinkedIn
+      </a>
+      <a href="tel:+919806060001" class="contact-chip">
+        <span class="chip-icon">📱</span> +91 98060 60001
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 Ashish Ahuja</p>
+  <p>Venture Scout · Indore, India</p>
+</footer>
+
+<script>
+// Custom cursor
+const dot = document.getElementById('curDot');
+const ring = document.getElementById('curRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  dot.style.left = mx + 'px';
+  dot.style.top = my + 'px';
+});
+
+(function animRing() {
+  rx += (mx - rx) * 0.13;
+  ry += (my - ry) * 0.13;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(animRing);
+})();
+
+document.querySelectorAll('a, button, .tl-item, .sk-card, .belief-card, .edu-card').forEach(el => {
+  el.addEventListener('mouseenter', () => ring.classList.add('expand'));
+  el.addEventListener('mouseleave', () => ring.classList.remove('expand'));
+});
+
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Nav background on scroll
+const nav = document.querySelector('nav');
+window.addEventListener('scroll', () => {
+  nav.style.borderBottomColor = window.scrollY > 10 ? 'rgba(0,0,0,0.08)' : 'rgba(0,0,0,0.06)';
+});
+</script>
+</body>
+</html>
